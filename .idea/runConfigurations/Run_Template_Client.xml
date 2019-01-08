@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Run Template Client" type="JetRunConfigurationType" factoryName="Kotlin" singleton="true">
-    <option name="MAIN_CLASS_NAME" value="com.template.ClientKt" />
+    <option name="MAIN_CLASS_NAME" value="com.apemon.ClientKt" />
     <option name="VM_PARAMETERS" value="" />
     <option name="PROGRAM_PARAMETERS" value="localhost:10006 user1 test" />
     <option name="WORKING_DIRECTORY" value="" />

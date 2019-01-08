@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Run Template Server" type="JetRunConfigurationType" factoryName="Kotlin" singleton="true">
-    <option name="MAIN_CLASS_NAME" value="com.template.webserver.ServerKt" />
+    <option name="MAIN_CLASS_NAME" value="com.apemon.webserver.ServerKt" />
     <option name="VM_PARAMETERS" value="" />
     <option name="PROGRAM_PARAMETERS" value="" />
     <option name="WORKING_DIRECTORY" value="" />

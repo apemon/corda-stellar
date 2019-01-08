@@ -1,4 +1,4 @@
-package com.template
+package com.apemon
 
 import net.corda.testing.node.MockNetwork
 import org.junit.After
@@ -6,7 +6,7 @@ import org.junit.Before
 import org.junit.Test
 
 class FlowTests {
-    private val network = MockNetwork(listOf("com.template"))
+    private val network = MockNetwork(listOf("com.apemon"))
     private val a = network.createNode()
     private val b = network.createNode()
 

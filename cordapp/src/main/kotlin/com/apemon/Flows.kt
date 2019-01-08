@@ -1,4 +1,4 @@
-package com.template
+package com.apemon
 
 import co.paralleluniverse.fibers.Suspendable
 import net.corda.core.flows.*

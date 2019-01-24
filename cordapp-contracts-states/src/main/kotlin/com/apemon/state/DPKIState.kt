@@ -10,7 +10,8 @@ import net.corda.core.schemas.PersistentState
 import net.corda.core.schemas.QueryableState
 
 data class DPKIState(val network: String,
-                     val address: String,
+                     val keyType: String,
+                     val publicKey: String,
                      val owner: Party,
                      val alias: String,
                      override val linearId: UniqueIdentifier = UniqueIdentifier()
@@ -23,9 +24,12 @@ data class DPKIState(val network: String,
     override fun generateMappedObject(schema: MappedSchema): PersistentState {
         return when (schema) {
             is DPKIModelSchemaV1 -> DPKIModelSchemaV1.PersistentDPKIModel(
-                    SecureHash.sha256(this.network + ":" + this.address).toString(),
+                    SecureHash.sha256(this.network + ":" + this.publicKey).toString(),
                     this.network,
-                    this.address,
+                    this.keyType,
+                    this.publicKey,
+                    this.owner.name.toString(),
+                    this.alias,
                     this.linearId.id
             )
             else -> throw IllegalArgumentException("Unrecognised schema $schema")

@@ -23,12 +23,21 @@ object DPKIModelSchemaV1: MappedSchema(
             @Column(name = "network")
             var network: String,
 
-            @Column(name = "address")
+            @Column(name = "key_type")
+            var keyType: String,
+
+            @Column(name = "public_key")
             var address: String,
+
+            @Column(name = "owner")
+            var owner: String,
+
+            @Column(name = "alias")
+            var alias: String,
 
             @Column(name = "linear_id")
             var linearId: UUID
     ): PersistentState() {
-        constructor(): this("","","",UUID.randomUUID())
+        constructor(): this("","","","","","",UUID.randomUUID())
     }
 }

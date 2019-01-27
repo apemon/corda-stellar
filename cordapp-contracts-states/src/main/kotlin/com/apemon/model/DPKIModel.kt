@@ -4,7 +4,6 @@ import net.corda.core.serialization.CordaSerializable
 
 @CordaSerializable
 data class DPKIModel(val identifier: String,
-                     val owner: String,
                      val network: String,
                      val keyType: String,
                      val publicKey: String,

@@ -16,13 +16,12 @@ class DPKIDatabaseService(services: ServiceHub): DatabaseService(services) {
         val query = "Insert into $TABLE_NAME values(?,?,?,?,?,?)"
 
         val params = mapOf(1 to pki.identifier,
-                2 to pki.owner,
-                3 to pki.network,
-                4 to pki.keyType,
-                5 to pki.publicKey,
-                6 to pki.privateKey,
-                7 to pki.alias,
-                8 to pki.description)
+                2 to pki.network,
+                3 to pki.keyType,
+                4 to pki.publicKey,
+                5 to pki.privateKey,
+                6 to pki.alias,
+                7 to pki.description)
 
         executeUpdate(query, params)
         log.info("Proxy add $TABLE_NAME")
@@ -34,14 +33,13 @@ class DPKIDatabaseService(services: ServiceHub): DatabaseService(services) {
 
         val results = executeQuery(query, params, {
             val iden = it.getString(1)
-            val owner = it.getString(2)
-            val network = it.getString(3)
-            val keyType = it.getString(4)
-            val publicKey = it.getString(5)
-            val privateKey = it.getString(6)
-            val alias = it.getString(7)
-            val description = it.getString(8)
-            val pki = DPKIModel(identifier = iden, owner = owner, network = network, keyType = keyType,publicKey = publicKey, privateKey = privateKey, alias = alias, description = description)
+            val network = it.getString(2)
+            val keyType = it.getString(3)
+            val publicKey = it.getString(4)
+            val privateKey = it.getString(5)
+            val alias = it.getString(6)
+            val description = it.getString(7)
+            val pki = DPKIModel(identifier = iden, network = network, keyType = keyType,publicKey = publicKey, privateKey = privateKey, alias = alias, description = description)
             pki
         })
 
@@ -58,7 +56,6 @@ class DPKIDatabaseService(services: ServiceHub): DatabaseService(services) {
         val query = """
             create table if not exists $TABLE_NAME(
             identifier varchar(64),
-            owner varchar(256),
             network varchar(256),
             key_type varchar(256),
             public_key varchar(2048),

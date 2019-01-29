@@ -13,7 +13,7 @@ class DPKIDatabaseService(services: ServiceHub): DatabaseService(services) {
     }
 
     fun insertPKI(pki: DPKIModel) {
-        val query = "Insert into $TABLE_NAME values(?,?,?,?,?,?)"
+        val query = "Insert into $TABLE_NAME values(?,?,?,?,?,?,?)"
 
         val params = mapOf(1 to pki.identifier,
                 2 to pki.network,

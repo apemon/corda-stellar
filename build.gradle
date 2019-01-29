@@ -11,6 +11,7 @@ buildscript {
         slf4j_version = '1.7.25'
         log4j_version = '2.9.1'
         stellar_version = '0.4.0'
+        springfox_version = '2.9.2'
     }
 
     repositories {

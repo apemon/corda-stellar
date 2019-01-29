@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/api")
 class StandardController(rpc: NodeRPCConnection) {
     companion object {
         private val logger = LoggerFactory.getLogger(RestController::class.java)
@@ -28,7 +28,7 @@ class StandardController(rpc: NodeRPCConnection) {
     @GetMapping(value = "/addresses", produces = arrayOf("text/plain"))
     private fun addresses() = proxy.nodeInfo().addresses.toString()
 
-    @GetMapping(value = "/identities", produces = arrayOf("text/plain"))
+    @GetMapping(value = "/me", produces = arrayOf("text/plain"))
     private fun identities() = proxy.nodeInfo().legalIdentities.toString()
 
     @GetMapping(value = "/platformversion", produces = arrayOf("text/plain"))

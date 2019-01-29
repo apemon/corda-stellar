@@ -17,7 +17,7 @@ class DPKIContract: Contract {
     }
 
     override fun verify(tx: LedgerTransaction) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
 

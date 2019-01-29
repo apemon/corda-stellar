@@ -35,7 +35,7 @@ fun standardApi(): Docket {
             .groupName("standard-api")
             .apiInfo(apiInfo())
             .select()
-            .paths(PathSelectors.regex("/api.*"))
+            .paths(PathSelectors.regex("/api/.*"))
             .build()
 }
 

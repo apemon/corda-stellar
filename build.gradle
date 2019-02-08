@@ -12,6 +12,8 @@ buildscript {
         log4j_version = '2.9.1'
         stellar_version = '0.4.0'
         springfox_version = '2.9.2'
+        corbeans_version = '0.18'
+        scrudbeans_version = '0.7'
     }
 
     repositories {

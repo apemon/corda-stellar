@@ -19,15 +19,23 @@ dependencies {
     compile project(":cordapp-contracts-states")
     compile project(":cordapp")
 
-    compile("org.springframework.boot:spring-boot-starter-websocket:$spring_boot_version") {
-        exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
-    }
+    // Spring Boot
+    compile("org.springframework.boot:spring-boot-starter:$spring_boot_version")
+    compile("org.springframework.boot:spring-boot-starter-web:$spring_boot_version")
 
+    // Swagger
+    compile "io.springfox:springfox-swagger2:${springfox_version}"
+    compile "io.springfox:springfox-swagger-ui:${springfox_version}"
+
+    // Corbeans starterts
+    compile ("com.github.manosbatsis.corbeans:corbeans-spring-boot-starter:$corbeans_version")
+    // Add support for RESTful errors
+    compile ("com.github.manosbatsis.scrudbeans:scrudbeans-error:$scrudbeans_version")
+
+    // Other
     compile "org.apache.logging.log4j:log4j-slf4j-impl:${log4j_version}"
     compile "org.apache.logging.log4j:log4j-web:${log4j_version}"
     compile "org.slf4j:jul-to-slf4j:$slf4j_version"
-    compile "io.springfox:springfox-swagger2:${springfox_version}"
-    compile "io.springfox:springfox-swagger-ui:${springfox_version}"
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {

@@ -14,6 +14,7 @@ dependencies {
 
     // Corda dependencies.
     compile "$corda_release_group:corda-rpc:$corda_release_version"
+    compile "$corda_release_group:corda-jackson:$corda_release_version"
 
     // CorDapp dependencies.
     compile project(":cordapp-contracts-states")
@@ -32,10 +33,8 @@ dependencies {
     // Add support for RESTful errors
     compile ("com.github.manosbatsis.scrudbeans:scrudbeans-error:$scrudbeans_version")
 
-    // Other
-    compile "org.apache.logging.log4j:log4j-slf4j-impl:${log4j_version}"
-    compile "org.apache.logging.log4j:log4j-web:${log4j_version}"
-    compile "org.slf4j:jul-to-slf4j:$slf4j_version"
+    // JSON API
+    compile "javax.json:javax.json-api:1.1.3"
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
@@ -61,8 +60,4 @@ task runTemplateServer(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     main = 'com.apemon.webserver.ServerKt'
     args '--server.port=10007', '--config.rpc.host=localhost', '--config.rpc.port=10006', '--config.rpc.username=user1', '--config.rpc.password=password'
-}
-
-task runWebServer(type: JavaExec) {
-
 }

@@ -6,7 +6,9 @@ import com.apemon.flow.DPKIQueryFlow
 import com.apemon.model.DPKIModel
 import com.apemon.schema.DPKIModelSchemaV1
 import com.apemon.state.DPKIState
-import com.apemon.webserver.NodeRPCConnection
+import com.github.manosbatsis.corbeans.spring.boot.corda.util.NodeRpcConnection
+import net.corda.core.contracts.ContractState
+import net.corda.core.contracts.StateAndRef
 import net.corda.core.messaging.startFlow
 import net.corda.core.messaging.vaultQueryBy
 import net.corda.core.node.services.Vault
@@ -17,12 +19,17 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/dpki")
-class DPKIController(rpc: NodeRPCConnection) {
+class DPKIController(rpc: NodeRpcConnection) {
     companion object {
         private val logger = LoggerFactory.getLogger(RestController::class.java)
     }
 
     private val proxy = rpc.proxy
+
+    @GetMapping(value = "/all", produces = arrayOf("application/json"))
+    private fun listDPKI(): List<DPKIState> {
+        return proxy.vaultQueryBy<DPKIState>().states.map { it.state.data }
+    }
 
     @GetMapping(value = "/get", produces = arrayOf("application/json"))
     private fun getPKI(identifier:String): DPKIModel{

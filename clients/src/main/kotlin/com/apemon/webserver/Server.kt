@@ -1,10 +1,14 @@
 package com.apemon.webserver
 
+import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.Banner
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.WebApplicationType.SERVLET
-import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration
+import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.ComponentScan
 import springfox.documentation.builders.ApiInfoBuilder
 import springfox.documentation.builders.PathSelectors
 import springfox.documentation.service.ApiInfo
@@ -15,34 +19,13 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2
 /**
  * Our Spring Boot application.
  */
-@SpringBootApplication
-@EnableSwagger2
-private open class Starter
+@SpringBootApplication(exclude = arrayOf(SecurityAutoConfiguration::class, ErrorMvcAutoConfiguration::class))
+@ComponentScan(basePackages = arrayOf("com.github.manosbatsis.corbeans", "com.apemon.webserver"))
+open class Starter
 
 /**
  * Starts our Spring Boot application.
  */
 fun main(args: Array<String>) {
-    val app = SpringApplication(Starter::class.java)
-    app.setBannerMode(Banner.Mode.OFF)
-    app.webApplicationType = SERVLET
-    app.run(*args)
-}
-
-@Bean
-fun standardApi(): Docket {
-    return Docket(DocumentationType.SWAGGER_2)
-            .groupName("standard-api")
-            .apiInfo(apiInfo())
-            .select()
-            .paths(PathSelectors.regex("/api/.*"))
-            .build()
-}
-
-fun apiInfo(): ApiInfo {
-    return ApiInfoBuilder()
-            .title("hello world")
-            .description("")
-            .version("1.0")
-            .build()
+    runApplication<Starter>(*args)
 }

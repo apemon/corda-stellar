@@ -52,6 +52,31 @@ class DPKIDatabaseService(services: ServiceHub): DatabaseService(services) {
         return value
     }
 
+    fun getPKIByPublicKey(pubKey:String): DPKIModel {
+        val query = "select * from $TABLE_NAME where public_key = ?"
+        val params = mapOf(1 to pubKey)
+
+        val results = executeQuery(query, params, {
+            val iden = it.getString(1)
+            val network = it.getString(2)
+            val keyType = it.getString(3)
+            val publicKey = it.getString(4)
+            val privateKey = it.getString(5)
+            val alias = it.getString(6)
+            val description = it.getString(7)
+            val pki = DPKIModel(identifier = iden, network = network, keyType = keyType,publicKey = publicKey, privateKey = privateKey, alias = alias, description = description)
+            pki
+        })
+
+        if(results.isEmpty()) {
+            throw IllegalArgumentException("$pubKey is not in database.")
+        }
+
+        val value = results.single()
+
+        return value
+    }
+
     private fun setupStorage() {
         val query = """
             create table if not exists $TABLE_NAME(

@@ -14,6 +14,7 @@ class ProposalContract: Contract {
 
     interface Commands: CommandData {
         class Issue: TypeOnlyCommandData(), Commands
+        class Approve: TypeOnlyCommandData(), Commands
     }
 
     override fun verify(tx: LedgerTransaction) {

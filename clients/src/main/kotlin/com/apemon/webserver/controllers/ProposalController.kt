@@ -36,7 +36,7 @@ class ProposalController(rpc: NodeRpcConnection) {
             val party = proxy.partiesFromName(it, true).first()
             participants = participants.plus(party)
         }
-        val result = proxy.startFlow(::ProposalIssueFlow, request.xdr, participants, request.signers).returnValue.get()
+        val result = proxy.startFlow(::ProposalIssueFlow, request.xdr, request.publicKey, participants, request.requiredSettle, request.requiredSigner, request.signers).returnValue.get()
         return result.tx.outputStates.first() as ProposalState
     }
 

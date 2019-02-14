@@ -28,18 +28,30 @@ class ProposalApproveFlow(val linearId: UniqueIdentifier,
         val queryCriteria = QueryCriteria.LinearStateQueryCriteria(linearId = listOf(linearId))
         val input = serviceHub.vaultService.queryBy<ProposalState>(queryCriteria).states.single()
         val state = input.state.data
-        // get private key
+        // check that public key match with the ramaining signers
+        if(!state.candidatedSigner.contains(publicKey))
+            throw IllegalArgumentException("publickey not match with required signers")
+        // get private key & sign
         Network.useTestNetwork()
         val pkiService = serviceHub.cordaService(DPKIDatabaseService::class.java)
         val pkiModel = pkiService.getPKIByPublicKey(publicKey)
         val seed = pkiModel.privateKey
         val secret = KeyPair.fromSecretSeed(seed)
-        val xdr = state.xdr
+        val xdr = state.signedXdr
         val transaction = Transaction.fromEnvelopeXdr(xdr)
         transaction.sign(secret)
         val signedXdr = transaction.toEnvelopeXdrBase64()
         // build new state
-        val output = state.copy(xdr = signedXdr, signers = state.signers - publicKey)
+        var status = state.status
+        if(state.currentSigner.size == state.requiredSigner - 1)
+            if(state.requiredSettle)
+                status = "APPROVED"
+            else
+                status = "COMPLETE"
+        val output = state.copy(signedXdr = signedXdr,
+                candidatedSigner = state.candidatedSigner - publicKey,
+                currentSigner = state.currentSigner + publicKey,
+                status = status)
         // get notary
         val notary = input.state.notary
         // create transaction builder

@@ -10,7 +10,7 @@ buildscript {
         spring_boot_gradle_plugin_version = '2.0.2.RELEASE'
         slf4j_version = '1.7.25'
         log4j_version = '2.9.1'
-        stellar_version = '0.4.0'
+        stellar_version = '0.5.0'
         springfox_version = '2.9.2'
         corbeans_version = '0.18'
         scrudbeans_version = '0.7'

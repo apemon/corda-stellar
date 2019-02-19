@@ -1,7 +1,10 @@
 package com.apemon.webserver.controllers
 
 import com.apemon.flow.ProposalApproveFlow
+import com.apemon.flow.ProposalBurnFlow
 import com.apemon.flow.ProposalIssueFlow
+import com.apemon.flow.ProposalSettleFlow
+import com.apemon.model.ProposalModel
 import com.apemon.state.DPKIState
 import com.apemon.state.ProposalState
 import com.apemon.webserver.models.ProposalRequest
@@ -36,7 +39,10 @@ class ProposalController(rpc: NodeRpcConnection) {
             val party = proxy.partiesFromName(it, true).first()
             participants = participants.plus(party)
         }
-        val result = proxy.startFlow(::ProposalIssueFlow, request.xdr, request.publicKey, participants, request.requiredSettle, request.requiredSigner, request.signers).returnValue.get()
+        val assetIssuer = proxy.partiesFromName(request.assetIssuer, true).first()
+        participants = participants.plus(assetIssuer)
+        val model = ProposalModel(xdr = request.xdr, publicKey = request.publicKey, participants = participants, requiredSigner = request.requiredSigner, signers = request.signers, assetIssuer = assetIssuer, assetIssuerSigner = request.assetIssuerSigner)
+        val result = proxy.startFlow(::ProposalIssueFlow, model).returnValue.get()
         return result.tx.outputStates.first() as ProposalState
     }
 
@@ -45,6 +51,21 @@ class ProposalController(rpc: NodeRpcConnection) {
                                 @PathVariable(value = "publicKey") publicKey:String): ProposalState {
         val id = UniqueIdentifier.fromString(linearId)
         val result = proxy.startFlow(::ProposalApproveFlow, id, publicKey).returnValue.get()
+        return result.tx.outputStates.first() as ProposalState
+    }
+
+    @PostMapping(value = "/settle/{linearId}", produces = arrayOf("application/json"))
+    private fun settleProposal(@PathVariable(value = "linearId") linearId:String): ProposalState {
+        val id = UniqueIdentifier.fromString(linearId)
+        val result = proxy.startFlow(::ProposalSettleFlow, id).returnValue.get()
+        return result.tx.outputStates.first() as ProposalState
+    }
+
+    @PostMapping(value = "/burn/{linearId}/{publicKey}", produces = arrayOf("application/json"))
+    private fun burnProposal(@PathVariable(value = "linearId") linearId:String,
+                               @PathVariable(value = "publicKey") publicKey:String): ProposalState {
+        val id = UniqueIdentifier.fromString(linearId)
+        val result = proxy.startFlow(::ProposalBurnFlow, id, publicKey).returnValue.get()
         return result.tx.outputStates.first() as ProposalState
     }
 }

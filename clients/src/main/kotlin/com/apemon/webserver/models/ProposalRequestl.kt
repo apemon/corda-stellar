@@ -5,6 +5,7 @@ data class ProposalRequest(
     val signers: List<String>,
     val participants: List<String>,
     val publicKey: String,
-    val requiredSettle: Boolean = false,
-    val requiredSigner: Int
+    val requiredSigner: Int,
+    val assetIssuer: String = "",
+    val assetIssuerSigner: String = ""
 )

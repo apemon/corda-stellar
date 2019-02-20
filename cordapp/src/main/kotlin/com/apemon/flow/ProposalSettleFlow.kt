@@ -64,7 +64,10 @@ class ProposalSettleFlow(val linearId: UniqueIdentifier): FlowLogic<SignedTransa
         // send to counterParty
         subFlow(IdentitySyncFlow.Send(counterPartySession,ptx.tx))
         val stx = subFlow(CollectSignaturesFlow(ptx, listOf(counterPartySession), myOptionalKeys = myKeyToSign))
-        return subFlow(FinalityFlow(stx))
+        val ftx = subFlow(FinalityFlow(stx))
+        val counterparties = output.originalParticipants - ourIdentity - assetIssuer
+        subFlow(BroadcastTransaction(ftx, counterparties))
+        return ftx
     }
 }
 

@@ -2,18 +2,19 @@ package com.apemon.flow
 
 import co.paralleluniverse.fibers.Suspendable
 import net.corda.core.flows.*
+import net.corda.core.identity.Party
 import net.corda.core.node.StatesToRecord
 import net.corda.core.transactions.SignedTransaction
 
 @InitiatingFlow
-class BroadcastTransaction(val stx: SignedTransaction): FlowLogic<Unit>() {
+class BroadcastTransaction(val stx: SignedTransaction,
+                           val participants: List<Party>): FlowLogic<Unit>() {
 
     @Suspendable
     override fun call() {
-        var everyone = serviceHub.networkMapCache.allNodes.flatMap { it.legalIdentities }
         val notary = serviceHub.networkMapCache.notaryIdentities.first()
-        everyone = everyone - notary - ourIdentity
-        val sessions = everyone.map { initiateFlow(it)}
+        var counterparties = participants - notary - ourIdentity
+        val sessions = counterparties.map { initiateFlow(it)}
         sessions.forEach{ subFlow(SendTransactionFlow(it, stx))}
     }
 }

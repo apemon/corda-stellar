@@ -26,7 +26,9 @@ class DPKIIssueFlow(val state:DPKIState): FlowLogic<SignedTransaction>() {
         builder.verify(serviceHub)
         val ptx = serviceHub.signInitialTransaction(builder)
         val ftx = subFlow(FinalityFlow(ptx))
-        subFlow(BroadcastTransaction(ftx))
+        // broadcast transaction
+        val everyone = serviceHub.networkMapCache.allNodes.flatMap { it.legalIdentities }
+        subFlow(BroadcastTransaction(ftx, everyone))
         return ftx
     }
 }
